@@ -1,0 +1,99 @@
+.navbar{
+    background: #30302C;
+}
+
+.collapse{
+    background: #30302C;
+    padding: 20px;
+}
+
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+}
+  
+  
+.content {
+    position: fixed;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1;
+    width: 100%;
+    padding: 20px;
+}
+
+
+.card-header{
+    background-color: #30302C;
+}
+
+.btn{
+    background-color: #F7DB4C;
+    border-radius: 28px;
+    color: white
+}
+
+#search{
+    background-color: #C4C4C4;
+    height: 10%;
+    width: 100%;
+}
+
+#searchcont{
+    align-items: center;
+}
+
+#searchcont p{
+    font-family: Poppins;
+    font-size: 150%;
+    color: black;
+    font-style: normal;
+    font-weight: normal;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: -1px;
+}
+
+#fotter{
+    background-color: #30302C;
+    text-align: center;
+    padding: 1.25%;
+}
+
+.card-body {
+    background-color: #F1F3F6;
+}
+
+#videoscont{
+    border-radius: 20px;
+}
+
+#videobody{
+    border-radius: 20px;
+}
+
+#imgcard{
+    border-radius: 20px;
+}
+
+#supercont{
+    border-radius: 20px;
+}
+
+h5 {
+    color: black;
+    font-size: 115%;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+}
+
+p {
+    color: black;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+}

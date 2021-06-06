@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
+  <link rel="stylesheet" type="text/css" href="/static/style.css">
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+  <title>Recommendation System</title>
+</head>
+
+<body style="color:#E5E5E5">
+
+  <div class="pos-f-t">
+    <nav class="navbar navbar-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
+        aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"><i class="bi bi-chevron-expand"></i></span>
+        <span style="color: white">Movie Recomendation</span>
+      </button>
+    </nav>
+    <div class="collapse" id="navbarToggleExternalContent">
+        
+        {% if not user %}
+        <br>
+        <a href="" data-toggle="modal" data-target="#loginModal" style="color: white;">login</a>
+        <br>
+        <a href="" data-toggle="modal" data-target="#signupModal" style="color: white;">signup</a>
+        {% else %}
+        <br>
+        <a href="/logout" style="color: white;">logout</a>
+        <br>
+        {% endif %}
+    </div>
+  </div>
+
+
+  {% if msg %}
+  <div class="alert alert-dark alert-dismissible fade show" role="alert">
+    <strong>{{ msg }}!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endif %}
+
+  <br>
+  <br>
+
+  <div class="container" id="searchcont">
+    <form action="/" method="post">
+      <p>Enter the Movie to check if it is in database</p>
+      <input type="text" name="x" id="search">
+    </form>
+  </div>
+
+  <br>
+  <br>
+
+  <div class="container">
+    {% if videos %}
+    <div class="container-fluid">
+      <div class="album py-5 bg-light">
+        <div class="container">
+          <div class="row">
+            {% for i in videos %}
+            <div class="col-md-4" id="supercont">
+              <div class="card mb-4 shadow-sm" id="videoscont">
+                <img class="bd-placeholder-img card-img-top" id = "imgcard" width="100%" height="225" src="{{ i.thumbnail }}"
+                  preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                  aria-label="Placeholder: Thumbnail"></img>
+                <div class="card-body" id="videobody">
+                  <p class="card-text">{{ i.title }}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <small class="text-muted">{{ i.duration }} mins</small>
+                    </div>
+                    <a type="button" href="{{ i.url }}" class="btn btn-dark">View</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    {% endif %}
+    <br>
+
+    <div class="container">
+      <div class="card text-center">
+        <div class="card-header">
+          {{ namehead }}
+        </div>
+        <div class="card-body">
+          {% if rec %}
+          <table class="table table-bordered table-dark">
+            <thead>
+              <tr>
+                <th scope="row">Index</th>
+                <td colspan="2">Movies</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in predict %}
+              <tr>
+              <tr>
+                <th scope="row">{{loop.index}}</th>
+                <td colspan="2">{{i}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <h5 class="card-title">Enter Movies you have watched recently and rate them out of 5</h5>
+          <form action="/predict" method="post">
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <p>Movies Name</p>
+              </div>
+              <div class="col">
+                <p>Rating</p>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Movies name" name="title1" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Rating" name="rating1" required>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Movies name" name="title2" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Rating" name="rating2" required>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Movies name" name="title3" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Rating" name="rating3" required>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Movies name" name="title4" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Rating" name="rating4" required>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Movies name" name="title5" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Rating" name="rating5" required>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Movies name" name="title6" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Rating" name="rating6" required>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Movies name" name="title7" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Rating" name="rating7" required>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Movies name" name="title8" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Rating" name="rating8" required>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Movies name" name="title9" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Rating" name="rating9" required>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Movies name" name="title10" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Rating" name="rating10" required>
+              </div>
+            </div>
+            <br>
+            <input type="text" class="form-control" placeholder="No of recomendaations" name="o" required>
+            <br>
+            <button type="submit" class="btn btn-dark">Recomendations</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="container">
+      <div class="card text-center">
+        <div class="card-header">
+          Comments
+        </div>
+        <div class="card-body">
+          <form action="/comment" method="post">
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Name" name="namecom" required>
+              </div>
+              <div class="col">
+                <input type="email" class="form-control" placeholder="Email" name="emailcom" required>
+              </div>
+            </div>
+            <br>
+            <input type="text" class="form-control" placeholder="Enter comment" name="comtext" required>
+            <br>
+            <button type="submit" class="btn btn-dark">Comment</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Signup</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/signup" method="post">
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Your name" name="name" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Your email" name="email" required>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col">
+                <input type="password" class="form-control" placeholder="Password" name="pass1" required>
+              </div>
+              <div class="col">
+                <input type="password" class="form-control" placeholder="Re-enter password" name="pass2" required>
+              </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-dark">Signup</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/login" method="post">
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Your name" name="name" required>
+              </div>
+              <div class="col">
+                <input type="password" class="form-control" placeholder="Your password" name="password" required>
+              </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-dark">Login</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  
+
+</body>
+
+</html>
